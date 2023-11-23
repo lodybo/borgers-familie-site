@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Plakat Regular';
+    src: url('~/assets/fonts/plakat/plakat-webfont.woff2') format('woff2'),
+    url('~/assets/fonts/plakat/plakat-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+}
