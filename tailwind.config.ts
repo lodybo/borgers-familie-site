@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import { black, white } from "tailwindcss/colors";
+import plugin from "tailwindcss/plugin";
 
 export default {
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
@@ -17,5 +18,9 @@ export default {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addVariant }) => {
+      addVariant("details-open", "details[open] &");
+    }),
+  ],
 } satisfies Config;

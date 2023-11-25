@@ -10,4 +10,52 @@
     font-weight: normal;
     font-style: normal;
   }
+
+  summary {
+    list-style-type: none;
+  }
+
+  details summary::-webkit-details-marker,
+  details summary::marker {
+    display: none;
+    content: "";
+  }
+
+  /*
+    Thankfully borrowed from Ryan Mulligan
+    https://ryanmulligan.dev/blog/layout-breakouts/
+ */
+  .content {
+    --gap: clamp(1rem, 6vw, 3rem);
+    --full: minmax(var(--gap), 1fr);
+    --content: min(75vw, 100% - var(--gap) * 2);
+    --popout: minmax(0, 2rem);
+    --feature: minmax(0, 5rem);
+
+    display: grid;
+    grid-template-columns:
+    [full-start] var(--full)
+    [feature-start] var(--feature)
+    [popout-start] var(--popout)
+    [content-start] var(--content) [content-end]
+    var(--popout) [popout-end]
+    var(--feature) [feature-end]
+    var(--full) [full-end];
+  }
+
+  .content > * {
+    grid-column: content;
+  }
+
+  .popout {
+    grid-column: popout;
+  }
+
+  .feature {
+    grid-column: feature;
+  }
+
+  .full {
+    grid-column: full;
+  }
 }
