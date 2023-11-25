@@ -19,7 +19,7 @@ export const meta: MetaFunction = () => [
 
 export default function Index() {
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 content">
       <IntroductionContent />
 
       <BookPromoContent />
