@@ -2,6 +2,7 @@ import { type MetaFunction } from "@remix-run/node";
 
 import BookPromoContent from "~/components/BookPromoContent";
 import IntroductionContent from "~/components/IntroductionContent";
+import SinglePromoContent from "~/components/SInglePromoContent";
 
 export const meta: MetaFunction = () => [
   { title: "Borgers Familieband" },
@@ -23,6 +24,8 @@ export default function Index() {
       <IntroductionContent />
 
       <BookPromoContent />
+
+      <SinglePromoContent />
     </div>
   );
 }
