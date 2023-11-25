@@ -1,5 +1,6 @@
 import { type MetaFunction } from "@remix-run/node";
 
+import BookPromoContent from "~/components/BookPromoContent";
 import IntroductionContent from "~/components/IntroductionContent";
 
 export const meta: MetaFunction = () => [
@@ -18,8 +19,10 @@ export const meta: MetaFunction = () => [
 
 export default function Index() {
   return (
-    <>
+    <div className="space-y-10">
       <IntroductionContent />
-    </>
+
+      <BookPromoContent />
+    </div>
   );
 }
