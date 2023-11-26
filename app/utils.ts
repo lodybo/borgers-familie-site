@@ -74,3 +74,49 @@ export function useUser(): User {
 export function validateEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 3 && email.includes("@");
 }
+
+export function formatDateAsDayMonth(
+  isoString: string,
+): [day: string, month: string] {
+  const date = new Date(isoString);
+
+  return [
+    date.toLocaleDateString("nl-NL", {
+      day: "2-digit",
+    }),
+    date.toLocaleDateString("nl-NL", {
+      month: "short",
+    }),
+  ];
+}
+
+export function formatDate(isoString: string) {
+  const date = new Date(isoString);
+
+  return date.toLocaleDateString("nl-NL", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: false,
+  });
+}
+
+export function formatTime(isoString: string) {
+  const date = new Date(isoString);
+
+  return date.toLocaleTimeString("nl-NL", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: false,
+  });
+}
+
+export function formatToEuro(amount: string) {
+  return new Intl.NumberFormat("nl-NL", {
+    style: "currency",
+    currency: "EUR",
+  }).format(parseFloat(amount));
+}

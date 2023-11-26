@@ -1,5 +1,7 @@
 import { prisma } from "~/db.server";
 
+export { type Event } from "@prisma/client";
+
 export function getEvents() {
   return prisma.event.findMany({
     orderBy: {
