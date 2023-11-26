@@ -11,7 +11,7 @@ export async function loader() {
   return json({ events });
 }
 
-export default function TicketLayout() {
+export default function EventLayout() {
   return (
     <div className="w-full h-full grid grid-rows-[5rem_1fr_5rem] space-y-6">
       <Header />

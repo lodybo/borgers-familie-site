@@ -2,15 +2,15 @@ import { json, type LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import AnchorLink from "~/components/AnchorLink";
+import Image from "~/components/Image";
 import { getEventBySlug } from "~/models/events.server";
 import { constructGoogleMapsUrl, formatDate, formatTime } from "~/utils";
-import Image from "~/components/Image";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { slug } = params;
 
   if (!slug) {
-    return redirect("/tickets");
+    return redirect("/events");
   }
 
   try {

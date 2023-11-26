@@ -1,8 +1,9 @@
+import { SerializeFrom } from "@remix-run/node";
+
 import AnchorLink from "~/components/AnchorLink";
 import { EventMeta } from "~/components/EventMeta";
 import { Event } from "~/models/events.server";
 import { formatDateAsDayMonth } from "~/utils";
-import { SerializeFrom } from "@remix-run/node";
 
 type EventWithoutDates = SerializeFrom<Omit<Event, "createdAt" | "updatedAt">>;
 
@@ -36,7 +37,7 @@ function EventItem({ event }: EventItemProps) {
       </div>
       <div className="space-y-3">
         <h2>
-          <AnchorLink to={`/tickets/${event.slug}`}>{event.name}</AnchorLink>
+          <AnchorLink to={`/events/${event.slug}`}>{event.name}</AnchorLink>
         </h2>
 
         <EventMeta

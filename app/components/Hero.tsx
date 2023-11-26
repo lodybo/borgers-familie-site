@@ -19,7 +19,7 @@ export default function Hero() {
             Wil jij erbij zijn? Boek dan nu je kaarten!
           </p>
 
-          <Button to="/boekingen" primary>
+          <Button to="/events" primary>
             Boek tickets
           </Button>
         </div>
