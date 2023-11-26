@@ -2,11 +2,11 @@ import { type MetaFunction } from "@remix-run/node";
 
 import BookPromoContent from "~/components/BookPromoContent";
 import Footer from "~/components/Footer";
+import Hero from "~/components/Hero";
 import IntroductionContent from "~/components/IntroductionContent";
 import LiveAlbumPromoContent from "~/components/LiveAlbumPromoContent";
 import RosterContent from "~/components/RosterContent";
 import SinglePromoContent from "~/components/SInglePromoContent";
-import Hero from "~/components/Hero";
 
 export const meta: MetaFunction = () => [
   { title: "Borgers Familieband" },
@@ -38,7 +38,7 @@ export default function Index() {
         <RosterContent />
       </div>
 
-      <Footer />
+      <Footer showImage />
     </>
   );
 }

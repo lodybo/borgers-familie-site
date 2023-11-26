@@ -38,15 +38,19 @@ model Event {
   id          String @id @default(cuid())
   name        String
   description String
+  slug        String @unique
 
   venue        String
   venueAddress String
+  venueUrl     String
 
   date      DateTime
-  price     Decimal  @db.Money
-  imagePath String
+  doorsOpen DateTime
 
-  tickets Ticket[]
+  price     Decimal @db.Money
+  imagePath String?
+
+  soldTickets Ticket[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
