@@ -120,3 +120,8 @@ export function formatToEuro(amount: string) {
     currency: "EUR",
   }).format(parseFloat(amount));
 }
+
+export function constructGoogleMapsUrl(venue: string, address: string) {
+  const query = encodeURIComponent(`${venue} ${address}`);
+  return `https://maps.google.com/?q=${query}`;
+}

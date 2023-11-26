@@ -1,5 +1,10 @@
 import AnchorLink from "~/components/AnchorLink";
-import { formatDate, formatTime, formatToEuro } from "~/utils";
+import {
+  constructGoogleMapsUrl,
+  formatDate,
+  formatTime,
+  formatToEuro,
+} from "~/utils";
 
 type Props = {
   startTime: string;
@@ -42,7 +47,7 @@ export function EventMeta({
       </li>
       <li className="[grid-area:_address]">
         <span className="text-light-blue">Adres</span>{" "}
-        <AnchorLink subtle to={`https://maps.google.com/?q=${venueAddress}`}>
+        <AnchorLink subtle to={constructGoogleMapsUrl(venue, venueAddress)}>
           {venueAddress}
         </AnchorLink>
       </li>

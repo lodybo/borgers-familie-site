@@ -10,7 +10,7 @@ export async function loader() {
   return json({ events });
 }
 
-export default function TicketLayout() {
+export default function EventIndex() {
   const { events } = useLoaderData<typeof loader>();
 
   return <EventList events={events} />;

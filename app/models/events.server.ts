@@ -11,7 +11,7 @@ export function getEvents() {
 }
 
 export function getEventBySlug(slug: string) {
-  return prisma.event.findUnique({
+  return prisma.event.findUniqueOrThrow({
     where: {
       slug,
     },
