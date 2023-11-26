@@ -6,6 +6,7 @@ import IntroductionContent from "~/components/IntroductionContent";
 import LiveAlbumPromoContent from "~/components/LiveAlbumPromoContent";
 import RosterContent from "~/components/RosterContent";
 import SinglePromoContent from "~/components/SInglePromoContent";
+import Hero from "~/components/Hero";
 
 export const meta: MetaFunction = () => [
   { title: "Borgers Familieband" },
@@ -24,6 +25,8 @@ export const meta: MetaFunction = () => [
 export default function Index() {
   return (
     <>
+      <Hero />
+
       <div className="space-y-10 content">
         <IntroductionContent />
 
