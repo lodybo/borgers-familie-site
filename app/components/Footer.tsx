@@ -17,7 +17,7 @@ export default function Footer({ showImage }: Props) {
         />
       ) : null}
 
-      <div className="bg-light-blue flex justify-center py-5 px-10 text-base">
+      <div className="bg-light-blue text-white flex justify-center py-5 px-10 text-base">
         (c) 2017 - {currentYear} Borgers Familieband
       </div>
     </>

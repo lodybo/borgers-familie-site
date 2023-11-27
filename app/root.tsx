@@ -9,12 +9,15 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useMatches,
 } from "@remix-run/react";
 import { AuthenticityTokenProvider } from "remix-utils/csrf/react";
 
 import { csrf } from "~/csrf.server";
 import { getUser } from "~/session.server";
 import stylesheet from "~/tailwind.css";
+
+type BGHandle = { bg: string };
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -31,6 +34,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function App() {
   const { token } = useLoaderData<typeof loader>();
+  const matches = useMatches();
+  console.log(matches);
+
+  let appBG = "bg-black text-grey";
+  const hasCustomBG = matches.find(
+    (match) =>
+      typeof match.handle === "object" && "bg" in (match.handle as BGHandle),
+  );
+  if (hasCustomBG) {
+    appBG = (hasCustomBG.handle as BGHandle).bg;
+  }
 
   return (
     <html lang="en" className="h-full">
@@ -40,7 +54,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full bg-black text-grey font-standard text-2xl mx-auto w-full">
+      <body className={`h-full ${appBG} font-standard text-2xl mx-auto w-full`}>
         <AuthenticityTokenProvider token={token}>
           <Outlet />
         </AuthenticityTokenProvider>

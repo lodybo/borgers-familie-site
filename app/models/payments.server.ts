@@ -116,6 +116,17 @@ export function getPaymentFromDb(paymentId: string) {
   });
 }
 
+export function getPaymentFromDbWithTickets(paymentId: string) {
+  return prisma.payment.findUniqueOrThrow({
+    where: {
+      id: paymentId,
+    },
+    include: {
+      tickets: true,
+    },
+  });
+}
+
 export function updatePaymentStatus(
   paymentId: string,
   status: MolliePaymentStatus,
