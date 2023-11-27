@@ -59,7 +59,8 @@ model Event {
 model Ticket {
   id String @id @default(cuid())
 
-  ticketNumber Int @unique
+  ticketNumber Int    @unique
+  emailAddress String
 
   event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   eventId String
@@ -91,8 +92,9 @@ model Payment {
   status PaymentStatus
 
   molliePaymentId String
+  tickets         Ticket[]
+  emailAddress    String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Ticket    Ticket[]
 }

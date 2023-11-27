@@ -4,8 +4,12 @@ import { Ticket } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
-export function createTicketNumber() {
+export function generateTicketNumber() {
   return crypto.getRandomValues(new Uint8Array(3)).join("");
+}
+
+export function generateMultipleTicketNumbers(count: number) {
+  return Array.from({ length: count }, generateTicketNumber);
 }
 
 export function createTicket({

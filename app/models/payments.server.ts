@@ -11,7 +11,9 @@ import { prisma } from "~/db.server";
 import {
   Payment as DbPayment,
   PaymentStatus as DbPaymentStatus,
+  Event,
 } from "@prisma/client";
+import { generateMultipleTicketNumbers } from "~/models/tickets.server";
 
 const mollieClient = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY });
 
@@ -38,53 +40,61 @@ export function getiDEALIssuers(): Promise<MethodWithIssuers> {
 export async function createPayment({
   issuer,
   email,
-  amount,
-  ticketNumber,
+  event,
+  noOfTickets,
 }: {
   issuer: string;
   email: string;
-  amount: string;
-  ticketNumber: string;
-}): Promise<[DbPayment, MolliePayment]> {
-  const value = (parseInt(amount, 10) * 10).toFixed(2);
+  event: Event;
+  noOfTickets: string;
+}): Promise<MolliePayment> {
+  const value = (
+    parseInt(noOfTickets, 10) * parseFloat(event.price.toString())
+  ).toFixed(2);
+
+  const ticketNumbers = generateMultipleTicketNumbers(
+    parseInt(noOfTickets, 10),
+  );
+
   const redirectUrl = new URL(
     `${process.env.MOLLIE_REDIRECT_BASE_URL}/betaling/verwerken`,
   );
-  redirectUrl.searchParams.set("ticketNumber", ticketNumber);
+  redirectUrl.searchParams.set("ticketNumber", ticketNumbers[0]);
 
   const molliePayment = await mollieClient.payments.create({
     amount: {
       currency: "EUR",
       value,
     },
-    description: "Mollie test payment",
+    description: event.name,
     redirectUrl: redirectUrl.toString(),
     locale: Locale.nl_NL,
     method: PaymentMethod.ideal,
     issuer,
     metadata: {
       email,
-      ticketNumber,
     },
   });
 
   const dbPayment = await prisma.payment.create({
     data: {
-      amount: parseFloat(amount),
+      amount: parseFloat(value),
       status: convertPaymentStatusses(molliePayment.status),
       molliePaymentId: molliePayment.id,
+      emailAddress: email,
     },
   });
 
-  return [dbPayment, molliePayment];
-}
+  await prisma.ticket.createMany({
+    data: ticketNumbers.map((ticketNumber) => ({
+      ticketNumber: parseInt(ticketNumber, 10),
+      paymentId: dbPayment.id,
+      eventId: event.id,
+      emailAddress: email,
+    })),
+  });
 
-export function getTickets() {
-  return mollieClient.payments
-    .page()
-    .then((payments) =>
-      payments.filter((payment) => payment.metadata.ticketNumber),
-    );
+  return molliePayment;
 }
 
 export function getPayment(paymentId: string) {

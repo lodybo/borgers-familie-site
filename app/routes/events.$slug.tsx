@@ -11,7 +11,7 @@ import EventDetails from "~/components/EventDetails";
 import TicketForm from "~/components/TicketForm";
 import { getEventBySlug } from "~/models/events.server";
 import { createPayment, getiDEALIssuers } from "~/models/payments.server";
-import { createTicket, createTicketNumber } from "~/models/tickets.server";
+import { createTicket, generateTicketNumber } from "~/models/tickets.server";
 import { validateEmail } from "~/utils";
 import invariant from "tiny-invariant";
 import { csrf } from "~/csrf.server";
@@ -41,6 +41,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   }
 
   const data = await request.formData();
+  const event = await getEventBySlug(slug);
 
   try {
     await csrf.validate(data, request.headers);
@@ -79,29 +80,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(typeof email === "string", "email is required");
   invariant(typeof amount === "string", "amount is required");
 
-  const ticketNumber = createTicketNumber();
-  const [dbPayment, molliePayment] = await createPayment({
+  const payment = await createPayment({
     issuer,
     email,
-    amount,
-    ticketNumber,
-  });
-  await createTicket({
-    ticketNumber,
-    paymentId: dbPayment.id,
-    eventSlug: slug,
+    event,
+    noOfTickets: amount,
   });
 
-  const checkoutUrl = molliePayment.getCheckoutUrl();
+  const checkoutUrl = payment.getCheckoutUrl();
 
   if (checkoutUrl) {
     return redirect(checkoutUrl, { status: 303 });
   }
 
-  return json(
-    { message: "No checkout URL found", molliePayment },
-    { status: 500 },
-  );
+  return json({ message: "No checkout URL found", payment }, { status: 500 });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => [
