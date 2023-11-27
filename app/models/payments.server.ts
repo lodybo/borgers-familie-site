@@ -101,6 +101,21 @@ export function getPayment(paymentId: string) {
   return mollieClient.payments.get(paymentId);
 }
 
+export function getPaymentFromDb(paymentId: string) {
+  return prisma.payment.findUniqueOrThrow({
+    where: {
+      id: paymentId,
+    },
+    include: {
+      _count: {
+        select: {
+          tickets: true,
+        },
+      },
+    },
+  });
+}
+
 export function updatePaymentStatus(
   paymentId: string,
   status: MolliePaymentStatus,

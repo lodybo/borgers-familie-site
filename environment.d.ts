@@ -4,5 +4,6 @@ declare namespace NodeJS {
     MOLLIE_API_KEY: string;
     MOLLIE_REDIRECT_BASE_URL: string;
     CSRF_SECRET: string;
+    SENDGRID_API_KEY: string;
   }
 }

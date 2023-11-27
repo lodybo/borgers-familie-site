@@ -17,3 +17,11 @@ export function getEventBySlug(slug: string) {
     },
   });
 }
+
+export function getEventById(id: string) {
+  return prisma.event.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  });
+}

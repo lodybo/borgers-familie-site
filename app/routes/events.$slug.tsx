@@ -6,15 +6,14 @@ import {
   redirect,
 } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
+import invariant from "tiny-invariant";
 
 import EventDetails from "~/components/EventDetails";
 import TicketForm from "~/components/TicketForm";
+import { csrf } from "~/csrf.server";
 import { getEventBySlug } from "~/models/events.server";
 import { createPayment, getiDEALIssuers } from "~/models/payments.server";
-import { createTicket, generateTicketNumber } from "~/models/tickets.server";
 import { validateEmail } from "~/utils";
-import invariant from "tiny-invariant";
-import { csrf } from "~/csrf.server";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { slug } = params;

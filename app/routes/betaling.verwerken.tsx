@@ -1,7 +1,13 @@
 import { PaymentStatus } from "@mollie/api-client";
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 
-import { getPayment, updatePaymentStatus } from "~/models/payments.server";
+import { sendTicketConfirmation } from "~/mail.server";
+import { getEventById } from "~/models/events.server";
+import {
+  getPayment,
+  getPaymentFromDb,
+  updatePaymentStatus,
+} from "~/models/payments.server";
 import { getTicketByTicketNumber } from "~/models/tickets.server";
 import { getErrorMessage } from "~/utils";
 
@@ -12,15 +18,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     if (ticketNumber) {
       const ticket = await getTicketByTicketNumber(ticketNumber);
-      const payment = await getPayment(ticket.payment.molliePaymentId);
-      await updatePaymentStatus(ticket.payment.id, payment.status);
+      const payment = await getPaymentFromDb(ticket.paymentId);
+      const event = await getEventById(ticket.eventId);
 
-      switch (payment.status) {
-        case PaymentStatus.failed:
+      const molliePayment = await getPayment(payment.molliePaymentId);
+      await updatePaymentStatus(payment.id, molliePayment.status);
+
+      switch (molliePayment.status) {
+        case PaymentStatus.open:
           return redirect("/betaling/mislukt", { status: 303 });
         case PaymentStatus.canceled:
           return redirect("/betaling/geannuleerd", { status: 303 });
         case PaymentStatus.paid:
+          await sendTicketConfirmation({ ticket, event, payment });
           return redirect("/betaling/gelukt", { status: 303 });
       }
       console.warn(
