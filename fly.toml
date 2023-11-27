@@ -5,7 +5,7 @@ processes = [ ]
 
 [mounts]
 source="borgers_site_data"
-destination="/media"
+destination="/borgers-site/media"
 
 [env]
 PORT = "8080"
