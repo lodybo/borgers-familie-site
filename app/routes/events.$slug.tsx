@@ -5,13 +5,15 @@ import {
   MetaFunction,
   redirect,
 } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useActionData, useLoaderData } from "@remix-run/react";
 
 import EventDetails from "~/components/EventDetails";
 import TicketForm from "~/components/TicketForm";
 import { getEventBySlug } from "~/models/events.server";
 import { createPayment, getiDEALIssuers } from "~/models/payments.server";
 import { createTicket, createTicketNumber } from "~/models/tickets.server";
+import { validateEmail } from "~/utils";
+import invariant from "tiny-invariant";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { slug } = params;
@@ -39,9 +41,35 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const data = await request.formData();
 
-  const issuer = data.get("issuer") as string;
-  const email = data.get("email") as string;
-  const amount = data.get("amount") as string;
+  const issuer = data.get("issuer");
+  const email = data.get("email");
+  const amount = data.get("amount");
+
+  const errors: Record<string, string> = {};
+
+  if (!issuer) {
+    errors.issuer = "Geen bank gekozen";
+  }
+
+  if (!email) {
+    errors.email = "Geen e-mailadres ingevuld";
+  }
+
+  if (!validateEmail(email)) {
+    errors.email = "Ongeldig e-mailadres";
+  }
+
+  if (!amount || amount === "0") {
+    errors.amount = "Geen bedrag ingevuld";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return json({ errors }, { status: 400 });
+  }
+
+  invariant(typeof issuer === "string", "issuer is required");
+  invariant(typeof email === "string", "email is required");
+  invariant(typeof amount === "string", "amount is required");
 
   const ticketNumber = createTicketNumber();
   const [dbPayment, molliePayment] = await createPayment({
@@ -74,12 +102,16 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => [
 
 export default function Event() {
   const { event, issuers } = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+
+  const errors =
+    actionData && "errors" in actionData ? actionData.errors : undefined;
 
   return (
     <div className="w-full md:w-[50vw] mx-auto px-4 space-y-4">
       <EventDetails event={event} />
 
-      <TicketForm issuers={issuers} price={event.price} />
+      <TicketForm issuers={issuers} price={event.price} errors={errors} />
     </div>
   );
 }

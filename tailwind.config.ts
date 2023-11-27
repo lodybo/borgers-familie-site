@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import { black, white } from "tailwindcss/colors";
+import { black, white, rose } from "tailwindcss/colors";
 import plugin from "tailwindcss/plugin";
 
 export default {
@@ -8,6 +8,7 @@ export default {
     colors: {
       black,
       white,
+      red: rose,
       grey: "rgb(230, 230, 230)",
       "neon-blue": "rgb(0, 9, 255)",
       "light-blue": "rgb(0, 151, 255)",
