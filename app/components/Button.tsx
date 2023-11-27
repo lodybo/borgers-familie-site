@@ -1,17 +1,28 @@
 import { Link, type LinkProps } from "@remix-run/react";
 import classnames from "classnames";
-import { JSX } from "react";
+import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
-type Props = JSX.IntrinsicElements["button"] &
-  LinkProps & {
-    primary?: boolean;
-  };
+interface BaseProps {
+  primary?: boolean;
+}
+interface ButtonProps
+  extends DetailedHTMLProps<
+      ButtonHTMLAttributes<HTMLButtonElement>,
+      HTMLButtonElement
+    >,
+    BaseProps {
+  to?: never;
+}
 
-export default function Button({ to, className, primary, ...rest }: Props) {
+interface ButtonLinkProps extends LinkProps, BaseProps {}
+
+type Props = ButtonProps | ButtonLinkProps;
+
+export default function Button({ className, primary, ...restProps }: Props) {
   const classes = classnames(
     "py-4 transition cursor-pointer",
     {
-      "inline-block": to,
+      "inline-block": restProps.to,
       "border border-grey": !primary,
       "border border-light-blue": primary,
       "bg-transparent text-grey": !primary,
@@ -26,9 +37,10 @@ export default function Button({ to, className, primary, ...rest }: Props) {
     className,
   );
 
-  if (to) {
-    return <Link className={classes} {...(rest as LinkProps)} />;
+  if ("to" in restProps) {
+    const { to = "", ...rest } = restProps as ButtonLinkProps;
+    return <Link to={to} className={classes} {...rest} />;
   }
 
-  return <button className={classes} {...rest} />;
+  return <button className={classes} {...(restProps as ButtonProps)} />;
 }
