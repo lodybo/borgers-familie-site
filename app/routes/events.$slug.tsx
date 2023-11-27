@@ -111,7 +111,7 @@ export default function Event() {
   }
 
   return (
-    <div className="w-full md:w-[50vw] mx-auto px-4 space-y-4">
+    <div className="w-full lg:w-[50vw] mx-auto space-y-4">
       <EventDetails event={event} />
 
       <TicketForm issuers={issuers} price={event.price} errors={errors} />

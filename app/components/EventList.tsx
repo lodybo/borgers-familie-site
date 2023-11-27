@@ -29,7 +29,7 @@ function EventItem({ event }: EventItemProps) {
   const [day, month] = formatDateAsDayMonth(event.date);
 
   return (
-    <li className="flex flex-row gap-8" key={event.id}>
+    <li className="flex flex-col md:flex-row gap-8" key={event.id}>
       <div className="flex flex-col items-center">
         <p className="text-4xl text-light-blue font-plakat">{day}</p>
 

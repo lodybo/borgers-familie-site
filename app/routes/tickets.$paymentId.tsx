@@ -33,8 +33,10 @@ export default function TicketPage() {
 
   if ("error" in loaderData) {
     return (
-      <div className="p-8">
-        <h1 className="text-4xl mb-10 font-plakat">Ticket niet gevonden</h1>
+      <div className="pt-8">
+        <h1 className="text-2xl md:text-4xl mb-5 font-plakat">
+          Ticket niet gevonden
+        </h1>
       </div>
     );
   }
@@ -42,12 +44,12 @@ export default function TicketPage() {
   const { payment, tickets, event } = loaderData;
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="bg-light-blue text-grey p-8">
-        <h1 className="text-4xl mb-10 font-plakat">{event.name}</h1>
+    <div className="feature pt-8 space-y-6">
+      <div className="bg-light-blue text-white p-8">
+        <h1 className="text-2xl lg:text-4xl font-plakat">{event.name}</h1>
       </div>
 
-      <p>{event.description}</p>
+      <p className="text-base md:text-2xl">{event.description}</p>
 
       <ul className="text-base list-disc list-inside">
         <li>
@@ -57,8 +59,8 @@ export default function TicketPage() {
         <li>Transactie ID: {payment.molliePaymentId}</li>
       </ul>
 
-      <h2 className="text-2xl font-plakat">Tickets</h2>
-      <ul className="grid grid-cols-2 gap-20">
+      <h2 className="text-2xl font-plakat text-center">Tickets</h2>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-20 w-full max-w-3xl place-items-center mx-auto">
         {tickets.map((ticket) => (
           <li key={ticket.id} className="space-y-2">
             <QRCode value={ticket.ticketNumber.toString()} />

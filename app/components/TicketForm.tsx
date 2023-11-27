@@ -30,7 +30,7 @@ export default function TicketForm({ price, issuers, errors }: Props) {
   };
 
   return (
-    <Form className="space-y-4 w-2/3" method="POST">
+    <Form className="space-y-4 w-full sm:w-2/3" method="POST">
       <AuthenticityTokenInput />
       <Input
         label="Email"

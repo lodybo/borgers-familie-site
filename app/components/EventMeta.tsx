@@ -27,7 +27,7 @@ export function EventMeta({
   const formattedDoorsOpen = formatTime(doorsOpen);
   const formattedPrice = formatToEuro(price);
   return (
-    <ul className="text-sm grid [grid-template-areas:_'starting-time_doors-open_price'_'venue_address_.'] gap-1">
+    <ul className="text-sm grid [grid-template-areas:_'starting-time_doors-open'_'venue_address'_'price_.'] sm:[grid-template-areas:_'starting-time_doors-open_price'_'venue_address_.'] gap-3 md:gap-1">
       <li className="[grid-area:_starting-time]">
         <span className="text-light-blue">Aanvangstijd</span>{" "}
         {formattedStartTime}
