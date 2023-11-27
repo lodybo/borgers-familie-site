@@ -1,5 +1,5 @@
-import Image from "~/components/Image";
 import AnchorLink from "~/components/AnchorLink";
+import Image from "~/components/Image";
 
 export default function LiveAlbumPromoContent() {
   return (

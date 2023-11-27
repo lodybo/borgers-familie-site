@@ -109,7 +109,7 @@ function streamingResize(
 
   imageStream.pipe(sharpTransforms).pipe(passthroughStream);
 
-  return new Response(passthroughStream as any, {
+  return new Response(passthroughStream as never, {
     headers: {
       "Content-Type": "image/webp",
       "Cache-Control": "public, max-age=31536000, immutable",

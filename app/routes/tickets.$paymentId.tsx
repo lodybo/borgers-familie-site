@@ -1,11 +1,11 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import QRCode from "react-qr-code";
 import invariant from "tiny-invariant";
 
 import { getEventById } from "~/models/events.server";
 import { getPaymentFromDbWithTickets } from "~/models/payments.server";
-import { useLoaderData } from "@remix-run/react";
 import { formatToEuro } from "~/utils";
-import QRCode from "react-qr-code";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { paymentId } = params;

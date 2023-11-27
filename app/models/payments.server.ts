@@ -7,12 +7,9 @@ import {
   Payment as MolliePayment,
 } from "@mollie/api-client";
 import { MethodData } from "@mollie/api-client/dist/types/src/data/methods/data";
+import { PaymentStatus as DbPaymentStatus, Event } from "@prisma/client";
+
 import { prisma } from "~/db.server";
-import {
-  Payment as DbPayment,
-  PaymentStatus as DbPaymentStatus,
-  Event,
-} from "@prisma/client";
 import { generateMultipleTicketNumbers } from "~/models/tickets.server";
 
 const mollieClient = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY });

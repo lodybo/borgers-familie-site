@@ -1,4 +1,3 @@
-import { SerializeFrom } from "@remix-run/node";
 import sgMail from "@sendgrid/mail";
 
 import { getEventById } from "~/models/events.server";
