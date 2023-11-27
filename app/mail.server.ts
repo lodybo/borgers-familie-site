@@ -56,14 +56,13 @@ export async function sendTicketConfirmation({
       molliePaymentId: payment.molliePaymentId,
       noOfTickets: payment._count.tickets,
       totalPrice: formatToEuro(payment.amount.toString()),
-      ticketUrl: `http://localhost:3000/tickets/${payment.id}`,
+      ticketUrl: `${process.env.APP_BASE_URL}/tickets/${payment.id}`,
     },
   };
 
   return sgMail.send({
     from,
     to: ticket.emailAddress,
-    subject: `Bevestiging van je ticket voor ${event.name}`,
     dynamicTemplateData: dynamicPayload,
     templateId: "d-b1119c500a6848708571c2abacf0e7c2",
   });

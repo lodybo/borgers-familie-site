@@ -56,9 +56,7 @@ export async function createPayment({
     parseInt(noOfTickets, 10),
   );
 
-  const redirectUrl = new URL(
-    `${process.env.MOLLIE_REDIRECT_BASE_URL}/betaling/verwerken`,
-  );
+  const redirectUrl = new URL(`${process.env.APP_BASE_URL}/betaling/verwerken`);
   redirectUrl.searchParams.set("ticketNumber", ticketNumbers[0]);
 
   const molliePayment = await mollieClient.payments.create({
