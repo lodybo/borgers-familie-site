@@ -14,6 +14,7 @@ import { createPayment, getiDEALIssuers } from "~/models/payments.server";
 import { createTicket, createTicketNumber } from "~/models/tickets.server";
 import { validateEmail } from "~/utils";
 import invariant from "tiny-invariant";
+import { csrf } from "~/csrf.server";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { slug } = params;
@@ -40,6 +41,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
   }
 
   const data = await request.formData();
+
+  try {
+    await csrf.validate(data, request.headers);
+  } catch (error) {
+    console.error("Invalid request", error);
+    return json({ errors: { form: "Invalid request" } }, { status: 400 });
+  }
 
   const issuer = data.get("issuer");
   const email = data.get("email");
@@ -106,6 +114,10 @@ export default function Event() {
 
   const errors =
     actionData && "errors" in actionData ? actionData.errors : undefined;
+
+  if (errors?.form) {
+    console.error(errors.form);
+  }
 
   return (
     <div className="w-full md:w-[50vw] mx-auto px-4 space-y-4">

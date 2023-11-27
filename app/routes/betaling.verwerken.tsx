@@ -26,6 +26,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       console.warn(
         `Unknown payment status of ${payment.status} reached for ticket ${ticketNumber}`,
       );
+      return redirect("/betaling/mislukt", { status: 303 });
     } else {
       return redirect("/betaling/mislukt", { status: 303 });
     }

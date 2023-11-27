@@ -8,8 +8,11 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
+import { AuthenticityTokenProvider } from "remix-utils/csrf/react";
 
+import { csrf } from "~/csrf.server";
 import { getUser } from "~/session.server";
 import stylesheet from "~/tailwind.css";
 
@@ -19,10 +22,16 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  return json({ user: await getUser(request) });
+  const [token, cookieHeader] = await csrf.commitToken(request);
+  return json(
+    { user: await getUser(request), token },
+    { headers: { "Set-Cookie": cookieHeader! } },
+  );
 };
 
 export default function App() {
+  const { token } = useLoaderData<typeof loader>();
+
   return (
     <html lang="en" className="h-full">
       <head>
@@ -32,7 +41,9 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full bg-black text-grey font-standard text-2xl mx-auto w-full">
-        <Outlet />
+        <AuthenticityTokenProvider token={token}>
+          <Outlet />
+        </AuthenticityTokenProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

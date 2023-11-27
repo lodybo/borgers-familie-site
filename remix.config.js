@@ -4,4 +4,5 @@ module.exports = {
   ignoredRouteFiles: ["**/.*", "**/*.test.{ts,tsx}"],
   serverModuleFormat: "cjs",
   browserNodeBuiltinsPolyfill: { modules: { util: true } },
+  serverDependenciesToBundle: [/^remix-utils.*/],
 };

@@ -1,5 +1,6 @@
 import { Form } from "@remix-run/react";
 import { ChangeEvent, useState } from "react";
+import { AuthenticityTokenInput } from "remix-utils/csrf/react";
 
 import Button from "~/components/Button";
 import Input from "~/components/Input";
@@ -30,6 +31,7 @@ export default function TicketForm({ price, issuers, errors }: Props) {
 
   return (
     <Form className="space-y-4 w-2/3" method="POST">
+      <AuthenticityTokenInput />
       <Input
         label="Email"
         name="email"
