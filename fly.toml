@@ -4,7 +4,7 @@ kill_timeout = 5
 processes = [ ]
 
 [mounts]
-source="borgers-site_data"
+source="borgers_site_data"
 destination="/media"
 
 [env]
