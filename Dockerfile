@@ -20,7 +20,7 @@ FROM base as production-deps
 
 WORKDIR /borgers-site
 
-COPY --from=deps /myapp/node_modules /myapp/node_modules
+COPY --from=deps /borgers-site/node_modules /borgers-site/node_modules
 ADD package.json package-lock.json .npmrc ./
 RUN npm prune --omit=dev
 
@@ -29,7 +29,7 @@ FROM base as build
 
 WORKDIR /borgers-site
 
-COPY --from=deps /myapp/node_modules /myapp/node_modules
+COPY --from=deps /borgers-site/node_modules /borgers-site/node_modules
 
 ADD prisma .
 RUN npx prisma generate
@@ -42,11 +42,11 @@ FROM base
 
 WORKDIR /borgers-site
 
-COPY --from=production-deps /myapp/node_modules /myapp/node_modules
-COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
+COPY --from=production-deps /borgers-site/node_modules /borgers-site/node_modules
+COPY --from=build /borgers-site/node_modules/.prisma /borgers-site/node_modules/.prisma
 
-COPY --from=build /myapp/build /myapp/build
-COPY --from=build /myapp/public /myapp/public
+COPY --from=build /borgers-site/build /borgers-site/build
+COPY --from=build /borgers-site/public /borgers-site/public
 ADD . .
 
 CMD ["npm", "start"]
