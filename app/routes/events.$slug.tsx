@@ -35,64 +35,73 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export async function action({ request, params }: ActionFunctionArgs) {
   const { slug } = params;
 
-  if (!slug) {
-    return redirect("/events");
-  }
+  return json(
+    {
+      errors: {
+        form: "Dit is tijdelijk niet mogelijk. Maar je kan altijd tickets kopen via de <a class='border-b border-b-grey font-bold pb-0 hover:pb-0.5 hover:border-b-light-blue transition-all duration-200 ease-in-out' href='https://www.bluecollarhotel.com/events/'>website van het Blue Collar Hotel.</a>",
+      },
+    },
+    { status: 400 },
+  );
 
-  const data = await request.formData();
-  const event = await getEventBySlug(slug);
-
-  try {
-    await csrf.validate(data, request.headers);
-  } catch (error) {
-    console.error("Invalid request", error);
-    return json({ errors: { form: "Invalid request" } }, { status: 400 });
-  }
-
-  const issuer = data.get("issuer");
-  const email = data.get("email");
-  const amount = data.get("amount");
-
-  const errors: Record<string, string> = {};
-
-  if (!issuer) {
-    errors.issuer = "Geen bank gekozen";
-  }
-
-  if (!email) {
-    errors.email = "Geen e-mailadres ingevuld";
-  }
-
-  if (!validateEmail(email)) {
-    errors.email = "Ongeldig e-mailadres";
-  }
-
-  if (!amount || amount === "0") {
-    errors.amount = "Geen bedrag ingevuld";
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return json({ errors }, { status: 400 });
-  }
-
-  invariant(typeof issuer === "string", "issuer is required");
-  invariant(typeof email === "string", "email is required");
-  invariant(typeof amount === "string", "amount is required");
-
-  const payment = await createPayment({
-    issuer,
-    email,
-    event,
-    noOfTickets: amount,
-  });
-
-  const checkoutUrl = payment.getCheckoutUrl();
-
-  if (checkoutUrl) {
-    return redirect(checkoutUrl, { status: 303 });
-  }
-
-  return json({ message: "No checkout URL found", payment }, { status: 500 });
+  // if (!slug) {
+  //   return redirect("/events");
+  // }
+  //
+  // const data = await request.formData();
+  // const event = await getEventBySlug(slug);
+  //
+  // try {
+  //   await csrf.validate(data, request.headers);
+  // } catch (error) {
+  //   console.error("Invalid request", error);
+  //   return json({ errors: { form: "Invalid request" } }, { status: 400 });
+  // }
+  //
+  // const issuer = data.get("issuer");
+  // const email = data.get("email");
+  // const amount = data.get("amount");
+  //
+  // const errors: Record<string, string> = {};
+  //
+  // if (!issuer) {
+  //   errors.issuer = "Geen bank gekozen";
+  // }
+  //
+  // if (!email) {
+  //   errors.email = "Geen e-mailadres ingevuld";
+  // }
+  //
+  // if (!validateEmail(email)) {
+  //   errors.email = "Ongeldig e-mailadres";
+  // }
+  //
+  // if (!amount || amount === "0") {
+  //   errors.amount = "Geen bedrag ingevuld";
+  // }
+  //
+  // if (Object.keys(errors).length > 0) {
+  //   return json({ errors }, { status: 400 });
+  // }
+  //
+  // invariant(typeof issuer === "string", "issuer is required");
+  // invariant(typeof email === "string", "email is required");
+  // invariant(typeof amount === "string", "amount is required");
+  //
+  // const payment = await createPayment({
+  //   issuer,
+  //   email,
+  //   event,
+  //   noOfTickets: amount,
+  // });
+  //
+  // const checkoutUrl = payment.getCheckoutUrl();
+  //
+  // if (checkoutUrl) {
+  //   return redirect(checkoutUrl, { status: 303 });
+  // }
+  //
+  // return json({ message: "No checkout URL found", payment }, { status: 500 });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => [

@@ -23,7 +23,7 @@ export default function Hero() {
             Wil jij erbij zijn? Boek dan nu je kaarten!
           </p>
 
-          <Button to="/events" primary>
+          <Button to="https://www.bluecollarhotel.com/events/" primary>
             Boek tickets
           </Button>
         </div>

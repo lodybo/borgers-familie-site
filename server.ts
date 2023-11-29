@@ -37,6 +37,12 @@ async function run() {
     res.set("x-fly-region", process.env.FLY_REGION ?? "unknown");
     res.set("Strict-Transport-Security", `max-age=${60 * 60 * 24 * 365 * 100}`);
 
+    // Check if the request is coming from the staging domain
+    if (req.hostname === "staging.borgersfamilie.nl") {
+      // Set the noindex header
+      res.setHeader("X-Robots-Tag", "noindex");
+    }
+
     // /clean-urls/ -> /clean-urls
     if (req.path.endsWith("/") && req.path.length > 1) {
       const query = req.url.slice(req.path.length);
@@ -96,9 +102,9 @@ async function run() {
     process.env.NODE_ENV === "development"
       ? createDevRequestHandler(initialBuild)
       : createRequestHandler({
-        build: initialBuild,
-        mode: process.env.NODE_ENV,
-      }),
+          build: initialBuild,
+          mode: process.env.NODE_ENV,
+        }),
   );
 
   const port = process.env.PORT || 3000;

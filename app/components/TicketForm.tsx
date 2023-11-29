@@ -31,6 +31,14 @@ export default function TicketForm({ price, issuers, errors }: Props) {
 
   return (
     <Form className="space-y-4 w-full sm:w-2/3" method="POST">
+      {errors?.form ? (
+        <div
+          id="form-error"
+          className="text-sm text-red-500"
+          dangerouslySetInnerHTML={{ __html: errors.form }}
+        />
+      ) : null}
+
       <AuthenticityTokenInput />
       <Input
         label="Email"
