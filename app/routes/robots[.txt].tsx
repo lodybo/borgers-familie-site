@@ -14,7 +14,8 @@ export function loader({ request }: LoaderFunctionArgs) {
   return txt(`
     User-agent: *
     Allow: /
-    Disallow: /tickets/*
-    Disallow: /betaling/*
+    Disallow: /events
+    Disallow: /tickets
+    Disallow: /betaling
   `);
 }
