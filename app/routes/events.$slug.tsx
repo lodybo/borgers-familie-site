@@ -1,19 +1,20 @@
 import {
-  ActionFunctionArgs,
+  // ActionFunctionArgs,
   json,
   type LoaderFunctionArgs,
   MetaFunction,
   redirect,
 } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
-import invariant from "tiny-invariant";
+// import invariant from "tiny-invariant";
 
 import EventDetails from "~/components/EventDetails";
 import TicketForm from "~/components/TicketForm";
-import { csrf } from "~/csrf.server";
+// import { csrf } from "~/csrf.server";
 import { getEventBySlug } from "~/models/events.server";
-import { createPayment, getiDEALIssuers } from "~/models/payments.server";
-import { validateEmail } from "~/utils";
+// import { createPayment, getiDEALIssuers } from "~/models/payments.server";
+import { getiDEALIssuers } from "~/models/payments.server";
+// import { validateEmail } from "~/utils";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { slug } = params;
@@ -32,8 +33,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
   }
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
-  const { slug } = params;
+// export async function action({ request, params }: ActionFunctionArgs) {
+export async function action() {
+  // const { slug } = params;
 
   return json(
     {
