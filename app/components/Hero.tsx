@@ -16,14 +16,17 @@ export default function Hero() {
             Feestelijk 2024 openen?
           </h1>
           <p className="text-lg md:text-2xl font-plakat">
-            Op 6 en 7 januari keren we terug naar een traditie in Eindhoven: wij
+            Op 6 januari keren we terug naar een traditie in Eindhoven: wij
             openen dan het nieuwe jaar met een show in het Blue Collar Theater.
           </p>
           <p className="text-lg md:text-2xl font-plakat">
             Wil jij erbij zijn? Boek dan nu je kaarten!
           </p>
 
-          <Button to="https://www.bluecollarhotel.com/events/" primary>
+          <Button
+            to="https://shop.ikbenaanwezig.nl/tickets/event/borgers-family-life-gepresenteerd-do"
+            primary
+          >
             Boek tickets
           </Button>
         </div>
