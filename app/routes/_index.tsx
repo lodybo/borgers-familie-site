@@ -25,8 +25,6 @@ export const meta: MetaFunction = () => [
 export default function Index() {
   return (
     <>
-      <Hero />
-
       <div className="space-y-10 content">
         <IntroductionContent />
 
