@@ -4,6 +4,7 @@ import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
 interface BaseProps {
   primary?: boolean;
+  rounded?: boolean;
 }
 interface ButtonProps
   extends DetailedHTMLProps<
@@ -18,12 +19,18 @@ interface ButtonLinkProps extends LinkProps, BaseProps {}
 
 type Props = ButtonProps | ButtonLinkProps;
 
-export default function Button({ className, primary, ...restProps }: Props) {
+export default function Button({
+  className,
+  primary,
+  rounded,
+  ...restProps
+}: Props) {
   const classes = classnames(
     "py-4 transition cursor-pointer",
     {
       "inline-block": restProps.to,
-      "border border-grey": !primary,
+      border: !primary && !rounded,
+      "border-grey": !primary,
       "border border-light-blue": primary,
       "bg-transparent text-grey": !primary,
       "bg-light-blue text-grey": primary,
@@ -33,6 +40,9 @@ export default function Button({ className, primary, ...restProps }: Props) {
       "hover:bg-white hover:text-black": primary,
       "font-standard": !primary,
       "font-plakat": primary,
+      "rounded-full": rounded,
+      "border-2": rounded,
+      "px-5": rounded,
     },
     className,
   );

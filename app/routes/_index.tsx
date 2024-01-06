@@ -25,9 +25,9 @@ export const meta: MetaFunction = () => [
 export default function Index() {
   return (
     <>
-      <Hero />
+      <Hero scrollAnchorID="main-content" />
 
-      <div className="space-y-10 content">
+      <main id="main-content" className="space-y-10 content">
         <IntroductionContent />
 
         <BookPromoContent />
@@ -36,7 +36,7 @@ export default function Index() {
         <LiveAlbumPromoContent />
 
         <RosterContent />
-      </div>
+      </main>
 
       <Footer showImage />
     </>
