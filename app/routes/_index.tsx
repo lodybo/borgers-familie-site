@@ -2,6 +2,7 @@ import { type MetaFunction } from "@remix-run/node";
 
 import BookPromoContent from "~/components/BookPromoContent";
 import Footer from "~/components/Footer";
+import Hero from "~/components/Hero";
 import IntroductionContent from "~/components/IntroductionContent";
 import LiveAlbumPromoContent from "~/components/LiveAlbumPromoContent";
 import RosterContent from "~/components/RosterContent";
@@ -24,7 +25,9 @@ export const meta: MetaFunction = () => [
 export default function Index() {
   return (
     <>
-      <div className="space-y-10 content">
+      <Hero scrollAnchorID="main-content" />
+
+      <main id="main-content" className="space-y-10 content">
         <IntroductionContent />
 
         <BookPromoContent />
@@ -33,7 +36,7 @@ export default function Index() {
         <LiveAlbumPromoContent />
 
         <RosterContent />
-      </div>
+      </main>
 
       <Footer showImage />
     </>

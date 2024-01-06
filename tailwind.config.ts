@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import { black, white, rose } from "tailwindcss/colors";
+import { black, white, rose, transparent } from "tailwindcss/colors";
 import plugin from "tailwindcss/plugin";
 
 export default {
@@ -12,6 +12,7 @@ export default {
       grey: "rgb(230, 230, 230)",
       "neon-blue": "rgb(0, 9, 255)",
       "light-blue": "rgb(0, 151, 255)",
+      transparent: transparent,
     },
     fontFamily: {
       standard: '"Helvetica", "Arial", sans-serif',
