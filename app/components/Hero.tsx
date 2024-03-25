@@ -15,11 +15,18 @@ export default function Hero({ scrollAnchorID }: Props) {
   };
 
   return (
-    <div className="full relative max-h-screen h-full lg:h-auto">
+    <div className="full relative max-h-screen h-full">
       <Image
         className="h-full w-full object-cover object-center"
-        src="/bandfoto.jpg"
         alt="De Borgers Familieband"
+        src="/image/bandfoto.jpg"
+        srcSet="
+          /image/bandfoto.jpg?w=800 800w,
+          /image/bandfoto.jpg?w=1200 1200w,
+          /image/bandfoto.jpg?w=1600 1600w,
+          /image/bandfoto.jpg?w=2000 2000w
+        "
+        sizes="100vw"
       />
 
       <div className="absolute bg-black/50 top-0 left-0 w-full h-full flex flex-col justify-center items-center">
