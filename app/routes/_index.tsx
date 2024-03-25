@@ -1,5 +1,5 @@
 import { json, type MetaFunction, SerializeFrom } from "@remix-run/node";
-import { type useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 
 import events from "~/assets/events.json";
 import BookPromoContent from "~/components/BookPromoContent";
