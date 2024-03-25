@@ -1,6 +1,6 @@
 import { json, type MetaFunction, SerializeFrom } from "@remix-run/node";
+import { type useLoaderData } from "@remix-run/react";
 
-import { useLoaderData } from "@remix-run/react";
 import events from "~/assets/events.json";
 import BookPromoContent from "~/components/BookPromoContent";
 import EventsSummary, {
@@ -12,7 +12,6 @@ import IntroductionContent from "~/components/IntroductionContent";
 import LiveAlbumPromoContent from "~/components/LiveAlbumPromoContent";
 import RosterContent from "~/components/RosterContent";
 import SinglePromoContent from "~/components/SinglePromoContent";
-import type { Event } from "~/models/events.server";
 
 export const meta: MetaFunction = () => [
   { title: "Borgers Familieband" },
