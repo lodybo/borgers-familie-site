@@ -90,10 +90,10 @@ export function formatDateAsDayMonth(
   ];
 }
 
-export function formatDate(isoString: string) {
+export function formatDate(isoString: string, ignoreTime?: boolean) {
   const date = new Date(isoString);
 
-  return date.toLocaleDateString("nl-NL", {
+  const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -101,7 +101,17 @@ export function formatDate(isoString: string) {
     hour: "numeric",
     minute: "2-digit",
     hour12: false,
-  });
+  };
+
+  if (!ignoreTime) {
+    return date.toLocaleDateString("nl-NL", {
+      year: options.year,
+      month: options.month,
+      day: options.day,
+    });
+  }
+
+  return date.toLocaleDateString("nl-NL", options);
 }
 
 export function formatTime(isoString: string) {

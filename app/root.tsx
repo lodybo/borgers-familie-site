@@ -35,7 +35,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function App() {
   const { token } = useLoaderData<typeof loader>();
   const matches = useMatches();
-  console.log(matches);
 
   let appBG = "bg-black text-grey";
   const hasCustomBG = matches.find(

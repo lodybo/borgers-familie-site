@@ -1,0 +1,49 @@
+[
+  {
+    "id": "1",
+    "name": "Padua Pop",
+    "venue": "Huize Padua",
+    "venueAddress": "Kluisstraat 2 Boekel",
+    "date": "2024-06-02T16:00",
+    "doorsOpen": "",
+    "price": "",
+    "venueUrl": "",
+    "description": "",
+    "slug": "",
+    "imagePath": "",
+    "createdAt": "",
+    "updatedAt": ""
+  },
+  {
+    "id": "2",
+    "name": "Lazy Sonny Afternoon",
+    "venue": "La Sonnerie",
+    "venueAddress": "Nieuwstraat 45, Son en Breugel",
+    "date": "2024-07-07T12:00",
+    "doorsOpen": "",
+    "price": "",
+    "venueUrl": "",
+    "description": "",
+    "slug": "",
+    "imagePath": "",
+    "createdAt": "",
+    "updatedAt": "",
+    "ignoreStartTime": "true"
+  },
+  {
+    "id": "3",
+    "name": "Cultuurboerderij Westelbeers",
+    "venue": "Cultuurboerderij Westelbeers",
+    "venueAddress": "Voldijnseweg 8, Westelbeers",
+    "date": "2024-09-01T14:30",
+    "startTime": "",
+    "doorsOpen": "",
+    "price": "",
+    "venueUrl": "",
+    "description": "",
+    "slug": "",
+    "imagePath": "",
+    "createdAt": "",
+    "updatedAt": ""
+  }
+]
