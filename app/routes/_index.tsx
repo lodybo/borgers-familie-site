@@ -1,5 +1,6 @@
 import { json, type MetaFunction, SerializeFrom } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { isAfter } from "date-fns";
 
 import events from "~/assets/events.json";
 import BookPromoContent from "~/components/BookPromoContent";
@@ -28,7 +29,10 @@ export const meta: MetaFunction = () => [
 ];
 
 export async function loader() {
-  return json<SerializeFrom<EventWithIgnoreOption[]>>(events);
+  const upcomingEvents = events.filter((event) =>
+    isAfter(new Date(event.date), new Date()),
+  );
+  return json<SerializeFrom<EventWithIgnoreOption[]>>(upcomingEvents);
 }
 
 export default function Index() {
