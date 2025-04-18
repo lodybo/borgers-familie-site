@@ -28,8 +28,8 @@ async function seed() {
     data: {
       name: "Borgers Family Life, gepresenteerd door Bertus Borgers",
       slug: "borgers-family-life",
-      date: new Date(2024, 0, 6, 20, 30, 0),
-      doorsOpen: new Date(2024, 0, 6, 19, 30, 0),
+      date: new Date(2026, 0, 6, 20, 30, 0),
+      doorsOpen: new Date(2026, 0, 6, 19, 30, 0),
       description:
         "Rockveteraan Bertus Borgers presenteert Borgers Family Life. Op zaterdag 6 januari 2024\n" +
         "brengt hij met zijn zussen, dochter, broer en een paar neven een bont repertoire vintage\n" +
@@ -40,6 +40,20 @@ async function seed() {
       venueUrl: "https://www.bluecollarhotel.nl/",
       imagePath: "/torn_paper.png",
       price: 17.5,
+    },
+  });
+
+  await prisma.event.create({
+    data: {
+      name: "Cultuurboerderij Westelbeers",
+      slug: "cultuurboerderij-westelbeers",
+      venue: "Cultuurboerderij Westelbeers",
+      venueAddress: "Voldijnseweg 8, Westelbeers",
+      date: new Date(2025, 8, 7, 14, 30, 0),
+      doorsOpen: new Date(2025, 8, 7, 14, 0, 0),
+      description: "De Borgers Family Band komt naar Westelbeers!",
+      venueUrl: "https://www.cultuurboerderij.nl",
+      price: 15,
     },
   });
 
