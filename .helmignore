@@ -39,3 +39,7 @@ docs
 .github
 .husky
 scaffold-templates
+media
+cypress
+mocks
+test

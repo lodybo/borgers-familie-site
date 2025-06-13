@@ -2,21 +2,19 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Values.app.name }}-postgres
-  labels:
-    {{ .Values.app.labels | nindent 4 }}
-    component: postgres
+  namespace: {{ .Values.app.namespace }}
+  labels: {{ toYaml .Values.app.labels | nindent 4 }}
+    - component: postgres
 spec:
   serviceName: {{ .Values.app.name }}-postgres
   replicas: 1
   selector:
-    matchLabels:
-      {{ .Values.app.selectorLabels | nindent 6 }}
-      component: postgres
+    matchLabels: {{ toYaml .Values.app.selectorLabels | nindent 6 }}
+      - component: postgres
   template:
     metadata:
-      labels:
-        {{ .Values.app.selectorLabels | nindent 8 }}
-        component: postgres
+      labels: {{ toYaml .Values.app.selectorLabels | nindent 8 }}
+        - component: postgres
     spec:
       containers:
         - name: postgres

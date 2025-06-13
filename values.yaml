@@ -1,13 +1,13 @@
 app:
-  name: borgers-familie-site
+  name: familieband-site
   namespace: borgers
   labels:
-    app: borgers-familie-site
-    chart: borgers-familie-site-{{ .Chart.version }}
-    release: borgers-familie-site
-    managed-by: Helm
+    - app: familieband-site
+    - chart: familieband-site-{{ .Chart.version }}
+    - release: familieband-site
+    - managed-by: helm
   selectorLabels:
-    app: borgers-familie-site
+    - app: familieband-site
   image:
     repository: registry.digitalocean.com/lodybo-registry/borgers-familie-site
     tag: latest
