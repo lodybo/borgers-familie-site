@@ -1,0 +1,21 @@
+app:
+  name: borgers-familie-site
+  namespace: borgers
+  labels:
+    app: borgers-familie-site
+    chart: borgers-familie-site-{{ .Chart.version }}
+    release: borgers-familie-site
+    managed-by: Helm
+  selectorLabels:
+    app: borgers-familie-site
+  image:
+    repository: registry.digitalocean.com/lodybo-registry/borgers-familie-site
+    tag: latest
+    pullPolicy: IfNotPresent
+
+postgres:
+  database: borgers_familie
+  username: borgers_familie
+  password: "<PLACEHOLDER>"
+  storage:
+    size: 1Gi

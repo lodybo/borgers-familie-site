@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.app.name }}-postgres
+  labels:
+    {{ .Values.app.labels | nindent 4 }}
+    component: postgres
+spec:
+  serviceName: {{ .Values.app.name }}-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      {{ .Values.app.selectorLabels | nindent 6 }}
+      component: postgres
+  template:
+    metadata:
+      labels:
+        {{ .Values.app.selectorLabels | nindent 8 }}
+        component: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17.5
+          env:
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.database }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.username }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.name }}-postgres-secret
+                  key: password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+              name: postgres
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: do-block-storage
+        resources:
+          requests:
+            storage: {{ .Values.postgres.storage.size }}
