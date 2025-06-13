@@ -2,12 +2,12 @@ app:
   name: familieband-site
   namespace: borgers
   labels:
-    - app: familieband-site
-    - chart: familieband-site-{{ .Chart.version }}
-    - release: familieband-site
-    - managed-by: helm
+    app: familieband-site
+    chart: familieband-site-{{ .Chart.Version }}
+    release: familieband-site
+    managed-by: helm
   selectorLabels:
-    - app: familieband-site
+    app: familieband-site
   image:
     repository: registry.digitalocean.com/lodybo-registry/borgers-familie-site
     tag: latest
