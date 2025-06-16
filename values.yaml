@@ -3,7 +3,7 @@ app:
   namespace: borgers
   labels:
     app: familieband-site
-    chart: familieband-site-{{ .Chart.Version }}
+    chart: familieband-site-1.0.0
     release: familieband-site
     managed-by: helm
   selectorLabels:
