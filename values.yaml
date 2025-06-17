@@ -1,0 +1,21 @@
+app:
+  name: familieband-site
+  namespace: borgers
+  labels:
+    app: familieband-site
+    chart: familieband-site-1.0.0
+    release: familieband-site
+    managed-by: helm
+  selectorLabels:
+    app: familieband-site
+  image:
+    repository: registry.digitalocean.com/lodybo-registry/borgers-familie-site
+    tag: latest
+    pullPolicy: IfNotPresent
+
+postgres:
+  database: borgers_familie
+  username: borgers_familie
+  password: "<PLACEHOLDER>"
+  storage:
+    size: 1Gi

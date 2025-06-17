@@ -1,11 +1,12 @@
 name: 🚀 Deploy
 
 on:
-  push:
-    branches:
-      - main
-      - dev
-  pull_request:
+#  push:
+#    branches:
+#      - main
+#      - dev
+#  pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
