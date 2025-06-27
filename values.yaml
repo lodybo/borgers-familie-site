@@ -11,7 +11,26 @@ app:
   image:
     repository: registry.digitalocean.com/lodybo-registry/borgers-familie-site
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: IfNotPresent\
+  domains:
+    production: borgersfamilieband.spindraad.app
+    development: borgersfamilieband.spindraad.dev
+    external: borgersfamilie.nl
+
+environment: production # or: development
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+service:
+  name: familieband-site-service
+  port: 80
+  targetPort: 3000
 
 postgres:
   database: borgers_familie

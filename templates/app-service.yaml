@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.app.name }}-service
+  namespace: {{ .Values.app.namespace }}
+  labels: {{ toYaml .Values.app.labels | nindent 4 }}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.app.domains.production }}
+spec:
+  selector:
+      app: {{ .Values.app.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}

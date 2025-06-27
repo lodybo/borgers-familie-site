@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.app.namespace }}
+  labels: {{ toYaml .Values.app.labels | nindent 4 }}
+    environment: {{ .Values.environment }}
+
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      labels: {{ toYaml .Values.app.labels | nindent 8 }}
+        environment: {{ .Values.environment }}
+    spec:
+      nodeSelector:
+        app-node: "true"
+      containers:
+        - name: {{ .Values.app.name }}
+          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.name }}-postgres-secret
+                  key: password
+            - name: DATABASE_URL
+              value: "postgres://{{ .Values.postgres.username }}:$(DATABASE_PASSWORD)@{{ .Values.app.name }}-postgresql-service:5432/{{ .Values.postgres.database }}"
+          resources:
+            requests:
+              memory: {{ .Values.resources.requests.memory | default "128Mi" }}
+              cpu: {{ .Values.resources.requests.cpu | default "100m" }}
+            limits:
+              memory: {{ .Values.resources.limits.memory | default "512Mi" }}
+              cpu: {{ .Values.resources.limits.cpu | default "500m" }}
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 1
+            failureThreshold: 3
