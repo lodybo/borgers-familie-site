@@ -1,7 +1,7 @@
 FROM node:18-bullseye-slim
 
 # set for base and all layer that inherit from it
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 WORKDIR /borgers-site
 
