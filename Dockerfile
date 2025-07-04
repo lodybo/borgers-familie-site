@@ -1,4 +1,4 @@
-FROM node:18-bullseye-slim
+FROM node:22-bullseye-slim
 
 # set for base and all layer that inherit from it
 ENV NODE_ENV=production
