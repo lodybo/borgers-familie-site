@@ -17,9 +17,22 @@ spec:
     spec:
       nodeSelector:
         app-node: "true"
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: {{ .Values.app.name }}
           image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
           ports:
             - containerPort: {{ .Values.service.port }}
           env:
@@ -53,3 +66,9 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 1
             failureThreshold: 3
+          volumeMounts:
+            - name: tmp-volume
+              mountPath: /tmp
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}

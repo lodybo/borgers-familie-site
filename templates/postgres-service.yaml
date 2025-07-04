@@ -5,7 +5,8 @@ metadata:
   namespace: {{ .Values.app.namespace }}
 spec:
   selector:
-    app: {{ .Values.app.name }}-postgres
+    app: {{ .Values.app.name }}
+    component: postgres
   ports:
     - protocol: TCP
       port: 5432

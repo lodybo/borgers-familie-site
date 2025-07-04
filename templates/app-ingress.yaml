@@ -11,6 +11,19 @@ spec:
     scheme: https
     permanent: true
 ---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Values.app.name }}-robots-deny
+  namespace: {{ .Values.app.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+    managed-by: helm
+spec:
+  headers:
+    customResponseHeaders:
+      X-Robots-Tag: "noindex, nofollow, nosnippet, noarchive"
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -28,7 +41,7 @@ metadata:
     {{- end }}
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.middlewares: {{ .Values.app.namespace }}-{{ .Values.app.name }}-https-redirect@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Values.app.namespace }}-{{ .Values.app.name }}-https-redirect@kubernetescrd,{{ .Values.app.namespace }}-{{ .Values.app.name }}-robots-deny@kubernetescrd
     cert-manager.io/cluster-issuer: letsencrypt-dns-issuer
 spec:
   rules:
