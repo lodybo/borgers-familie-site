@@ -15,6 +15,32 @@ spec:
       labels: {{ toYaml .Values.app.labels | nindent 8 }}
         environment: {{ .Values.environment }}
     spec:
+      initContainers:
+        - name: prisma-generate
+          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          command: ["sh", "-c"]
+          args:
+            - |
+              echo "Generating Prisma client..."
+              npx prisma generate
+              echo "Prisma client generated successfully."
+              cp -r /borgers-site/node_modules/.prisma /shared/
+              cp -r /borgers-site/node_modules/@prisma /shared/
+          env:
+              - name: DATABASE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.app.name }}-postgres-secret
+                    key: password
+              - name: DATABASE_URL
+                value: "postgres://{{ .Values.postgres.username }}:$(DATABASE_PASSWORD)@{{ .Values.app.name }}-postgresql-service:5432/{{ .Values.postgres.database }}"
+          securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              runAsGroup: 1000
+          volumeMounts:
+            - name: prisma-generated
+              mountPath: /shared
       nodeSelector:
         app-node: "true"
       securityContext:
@@ -27,6 +53,14 @@ spec:
       containers:
         - name: {{ .Values.app.name }}
           image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          command: [ 'sh', '-c' ]
+          args:
+            - |
+              # Copy prisma client back before starting
+              cp -r /shared/.prisma /borgers-site/node_modules/
+              cp -r /shared/@prisma /borgers-site/node_modules/
+              echo "Starting Borgers Familie Site..."
+              npm start
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -87,8 +121,8 @@ spec:
             timeoutSeconds: 1
             failureThreshold: 3
           volumeMounts:
-            - name: tmp-volume
-              mountPath: /tmp
+            - name: prisma-generated
+              mountPath: /shared
       volumes:
-        - name: tmp-volume
-          emptyDir: {}
+        - name: prisma-generated
+          emptyDir: { }

@@ -11,7 +11,4 @@ ADD prisma /borgers-site/prisma
 ADD node_modules /borgers-site/node_modules
 ADD package.json /borgers-site/package.json
 
-# Generate Prisma Client in the container environment
-RUN npx prisma generate
-
 CMD ["npm", "start"]
