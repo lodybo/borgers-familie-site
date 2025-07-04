@@ -50,7 +50,7 @@ spec:
                   name: {{ .Values.app.name }}-postgres-secret
                   key: password
             - name: DATABASE_URL
-              value: "postgres://{{ .Values.postgres.username }}:$(DATABASE_PASSWORD)@{{ .Values.app.name }}-postgresql-service:5432/{{ .Values.postgres.database }}"
+              value: "postgres://{{ .Values.postgres.username }}:$(DATABASE_PASSWORD)@{{ .Values.app.name }}-postgres:5432/{{ .Values.postgres.database }}"
             - name: SESSION_SECRET
               valueFrom:
                 secretKeyRef:
