@@ -58,6 +58,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.app.name }}-csrf-secret
                   key: csrfSecret
+            - name: MOLLIE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.name }}-mollie-secret
+                  key: apiKey
 {{/*          resources:*/}}
 {{/*            requests:*/}}
 {{/*              memory: {{ .Values.resources.requests.memory | default "128Mi" }}*/}}

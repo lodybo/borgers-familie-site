@@ -138,5 +138,6 @@ jobs:
           --set secrets.sessionSecret=${{ secrets.SESSION_SECRET }}
           --set secrets.sendgridApiKey=${{ secrets.SENDGRID_API_KEY }}
           --set secrets.csrfSecret=${{ secrets.CSRF_SECRET }}
+          --set secrets.mollieApiKey=${{ steps.env.outputs.environment == 'production' && secrets.MOLLIE_API_KEY_PROD || secrets.MOLLIE_API_KEY_DEV }}
           --namespace=$(echo ${{ steps.namespace.outputs.result }})
           --create-namespace

@@ -42,3 +42,4 @@ secrets:
   sessionSecret: "<PLACEHOLDER>"
   sendgridApiKey: "<PLACEHOLDER>"
   csrfSecret: "<PLACEHOLDER>"
+  mollieApiKey: "<PLACEHOLDER>"
