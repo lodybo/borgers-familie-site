@@ -28,7 +28,12 @@
     "db:studio": "prisma studio",
     "proxy:db": "run-p proxy:db:*",
     "proxy:db:staging": "fly proxy 25432:5432 -a borgers-site-f22c-staging-db",
-    "proxy:db:production": "fly proxy 15432:5432 -a borgers-site-f22c-db"
+    "proxy:db:production": "fly proxy 15432:5432 -a borgers-site-f22c-db",
+    "release:patch": "npm version patch",
+    "release:minor": "npm version minor",
+    "release:major": "npm version major",
+    "release:beta": "npm version prerelease",
+    "postversion": "git push && git push --tags"
   },
   "prettier": {},
   "eslintIgnore": [
