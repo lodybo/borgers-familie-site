@@ -135,5 +135,8 @@ jobs:
           $(echo ${{ steps.appname.outputs.result }}) .
           --set environment=$(echo ${{ steps.env.outputs.environment }})
           --set postgres.password=${{ secrets.POSTGRES_PASSWORD }}
+          --set secrets.sessionSecret=${{ secrets.SESSION_SECRET }}
+          --set secrets.sendgridApiKey=${{ secrets.SENDGRID_API_KEY }}
+          --set secrets.csrfSecret=${{ secrets.CSRF_SECRET }}
           --namespace=$(echo ${{ steps.namespace.outputs.result }})
           --create-namespace

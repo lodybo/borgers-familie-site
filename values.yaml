@@ -37,3 +37,8 @@ postgres:
   password: "<PLACEHOLDER>"
   storage:
     size: 1Gi
+
+secrets:
+  sessionSecret: "<PLACEHOLDER>"
+  sendgridApiKey: "<PLACEHOLDER>"
+  csrfSecret: "<PLACEHOLDER>"
