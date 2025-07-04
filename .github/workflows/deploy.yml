@@ -1,12 +1,14 @@
 name: 🚀 Deploy
 
 on:
-#  push:
-#    branches:
-#      - main
-#      - dev
-#  pull_request:
-  workflow_dispatch:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.event.repository.name }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -17,136 +19,121 @@ permissions:
   contents: read
 
 jobs:
-  lint:
-    name: ⬣ ESLint
+  docker:
+    name: 🐳 Build and push Docker image
     runs-on: ubuntu-latest
+
     steps:
-      - name: ⬇️ Checkout repo
+      - name: ⬇️ Checkout repository
         uses: actions/checkout@v4
 
-      - name: ⎔ Setup node
+      - name: ⎔ Set up Node.js
         uses: actions/setup-node@v4
         with:
-          cache: npm
-          cache-dependency-path: ./package.json
-          node-version: 18
+          node-version-file: ".nvmrc"
 
-      - name: 📥 Install deps
-        run: npm install
-
-      - name: 🔬 Lint
-        run: npm run lint
-
-  typecheck:
-    name: ʦ TypeScript
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v4
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v4
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v4
         with:
-          cache: npm
-          cache-dependency-path: ./package.json
-          node-version: 18
+          path: node_modules
+          key: node_modules-${{ hashFiles('package-lock.json') }}
 
-      - name: 📥 Install deps
-        run: npm install
+      - name: 📥 Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
 
-      - name: 🔎 Type check
-        run: npm run typecheck --if-present
+      - name: 🏗️ Build
+        run: npm run build
 
-#  vitest:
-#    name: ⚡ Vitest
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: ⬇️ Checkout repo
-#        uses: actions/checkout@v4
-#
-#      - name: ⎔ Setup node
-#        uses: actions/setup-node@v4
-#        with:
-#          cache: npm
-#          cache-dependency-path: ./package.json
-#          node-version: 18
-#
-#      - name: 📥 Install deps
-#        run: npm install
-#
-#      - name: ⚡ Run vitest
-#        run: npm run test -- --coverage
-#
-#  cypress:
-#    name: ⚫️ Cypress
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: ⬇️ Checkout repo
-#        uses: actions/checkout@v4
-#
-#      - name: 🏄 Copy test env vars
-#        run: cp .env.example .env
-#
-#      - name: ⎔ Setup node
-#        uses: actions/setup-node@v4
-#        with:
-#          cache: npm
-#          cache-dependency-path: ./package.json
-#          node-version: 18
-#
-#      - name: 📥 Install deps
-#        run: npm install
-#
-#      - name: 🐳 Docker compose
-#        # the sleep is just there to give time for postgres to get started
-#        run: docker compose up -d && sleep 3
-#        env:
-#          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
-#
-#      - name: 🛠 Setup Database
-#        run: npx prisma migrate reset --force
-#
-#      - name: ⚙️ Build
-#        run: npm run build
-#
-#      - name: 🌳 Cypress run
-#        uses: cypress-io/github-action@v6
-#        with:
-#          start: npm run start:mocks
-#          wait-on: http://localhost:8811
-#        env:
-#          PORT: 8811
+      - name: 🗑️ Prune dev dependencies
+        run: npm prune --omit=dev
 
-  deploy:
-    name: 🚀 Deploy
+      - name: ⚗️ Extract version from package.json
+        uses: sergeysova/jq-action@v2
+        id: version
+        with:
+          cmd: 'jq .version package.json -r'
+
+      - name: Login to GH Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: metadata
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+
+  deploy-prod:
+    name: 🚀 Deploy to production
     runs-on: ubuntu-latest
-#    needs: [lint, typecheck, vitest, cypress]
-    needs: [lint, typecheck]
-    # only deploy main/dev branch on pushes
-    if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
+    needs: docker
 
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
 
-      - name: 👀 Read app name
-        uses: SebRollen/toml-action@v1.0.2
-        id: app_name
+      - name: ⚗️ Extract version from package.json
+        uses: sergeysova/jq-action@v2
+        id: version
         with:
-          file: fly.toml
-          field: app
+          cmd: 'jq .version package.json -r'
 
-#      - name: 🎈 Setup Fly
-#        uses: superfly/flyctl-actions/setup-flyctl@v1.4
+      - name: ⚗️ Determine environment
+        id: env
+        run: |
+          if [[ "${{ steps.version.outputs.value }}" == *-beta* ]]; then
+            echo "setting up for development"
+            echo "environment=development" >> $GITHUB_OUTPUT
+            echo "cluster=spindraad-dev-cluster" >> $GITHUB_OUTPUT
+          else
+            echo "setting up for production"
+            echo "environment=production" >> $GITHUB_OUTPUT
+            echo "cluster=spindraad-app-cluster" >> $GITHUB_OUTPUT
+          fi
 
-#      - name: 🚀 Deploy Staging
-#        if: ${{ github.ref == 'refs/heads/dev' }}
-#        run: flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-staging
-#        env:
-#          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-#
-#      - name: 🚀 Deploy Production
-#        if: ${{ github.ref == 'refs/heads/main' }}
-#        run: flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}
-#        env:
-#          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: ⚗️ Extract app name from values.yaml
+        uses: mikefarah/yq@v4.44.2
+        id: appname
+        with:
+          cmd: "yq .app.name values.yaml"
+
+      - name: ⚗️ Extract namespace from values.yaml
+        uses: mikefarah/yq@v4.44.2
+        id: namespace
+        with:
+          cmd: "yq .app.namespace values.yaml"
+
+      - name: 🌊 Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: 💾 Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ steps.env.outputs.cluster }}
+
+      - name: ✏️ Update Helm Chart's appVersion
+        run: sed -i "s/<VERSION>/${{ steps.version.outputs.value }}/g" Chart.yaml
+
+      - name: 🚀 Deploy to cluster
+        run: >
+          helm upgrade --install
+          $(echo ${{ steps.appname.outputs.result }}) .
+          --set app.image.tag=$(echo ${{ steps.version.outputs.value }})
+          --set environment=$(echo ${{ steps.env.outputs.environment }})
+          --set postgres.password=${{ secrets.POSTGRES_PASSWORD }}
+          --namespace=$(echo ${{ steps.namespace.outputs.result }})
+          --create-namespace

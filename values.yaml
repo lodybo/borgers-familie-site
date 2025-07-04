@@ -21,11 +21,11 @@ environment: production # or: development
 
 resources:
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 50m
+    memory: 600Mi
   limits:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 200m
+    memory: 1.2Gi
 
 service:
   name: familieband-site-service
