@@ -43,13 +43,13 @@ spec:
                   key: password
             - name: DATABASE_URL
               value: "postgres://{{ .Values.postgres.username }}:$(DATABASE_PASSWORD)@{{ .Values.app.name }}-postgresql-service:5432/{{ .Values.postgres.database }}"
-          resources:
-            requests:
-              memory: {{ .Values.resources.requests.memory | default "128Mi" }}
-              cpu: {{ .Values.resources.requests.cpu | default "100m" }}
-            limits:
-              memory: {{ .Values.resources.limits.memory | default "512Mi" }}
-              cpu: {{ .Values.resources.limits.cpu | default "500m" }}
+{{/*          resources:*/}}
+{{/*            requests:*/}}
+{{/*              memory: {{ .Values.resources.requests.memory | default "128Mi" }}*/}}
+{{/*              cpu: {{ .Values.resources.requests.cpu | default "100m" }}*/}}
+{{/*            limits:*/}}
+{{/*              memory: {{ .Values.resources.limits.memory | default "512Mi" }}*/}}
+{{/*              cpu: {{ .Values.resources.limits.cpu | default "500m" }}*/}}
           livenessProbe:
             httpGet:
               path: /healthcheck
