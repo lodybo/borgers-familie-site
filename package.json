@@ -2,7 +2,7 @@
   "name": "borgers-site-f22c",
   "private": true,
   "sideEffects": false,
-  "version": "1.3.2",
+  "version": "1.3.3",
   "scripts": {
     "build": "run-s build:*",
     "build:remix": "remix build",
