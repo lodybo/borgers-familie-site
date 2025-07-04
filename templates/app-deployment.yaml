@@ -43,6 +43,21 @@ spec:
                   key: password
             - name: DATABASE_URL
               value: "postgres://{{ .Values.postgres.username }}:$(DATABASE_PASSWORD)@{{ .Values.app.name }}-postgresql-service:5432/{{ .Values.postgres.database }}"
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.name }}-session-secret
+                  key: password
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.name }}-sendgrid-secret
+                  key: apiKey
+            - name: CSRF_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.name }}-csrf-secret
+                  key: csrfSecret
 {{/*          resources:*/}}
 {{/*            requests:*/}}
 {{/*              memory: {{ .Values.resources.requests.memory | default "128Mi" }}*/}}
