@@ -3,15 +3,15 @@ app:
   namespace: borgers
   labels:
     app: familieband-site
-    chart: familieband-site-1.0.0
+    chart: familieband-site-1.1.0
     release: familieband-site
     managed-by: helm
   selectorLabels:
     app: familieband-site
   image:
-    repository: registry.digitalocean.com/lodybo-registry/borgers-familie-site
+    repository: ghcr.io/lodybo/borgers-familie-site
     tag: latest
-    pullPolicy: IfNotPresent\
+    pullPolicy: IfNotPresent
   domains:
     production: borgersfamilieband.spindraad.app
     development: borgersfamilieband.spindraad.dev
