@@ -20,9 +20,6 @@ spec:
         - podSelector:
             matchLabels:
               app: {{ .Values.app.name }}
-      ports:
-        - protocol: TCP
-          port: {{ .Values.service.targetPort }}
   egress:
     - to:
         - podSelector:
