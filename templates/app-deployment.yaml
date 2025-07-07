@@ -15,6 +15,7 @@ spec:
     metadata:
       labels: {{ toYaml .Values.app.labels | nindent 8 }}
         environment: {{ .Values.environment }}
+        component: app
     spec:
       nodeSelector:
         app-node: "true"
