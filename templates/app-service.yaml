@@ -4,7 +4,6 @@ metadata:
   name: {{ .Values.app.name }}-service
   namespace: {{ .Values.app.namespace }}
   labels: {{ toYaml .Values.app.labels | nindent 4 }}
-    component: app
   annotations:
     external-dns.alpha.kubernetes.io/hostname: {{ .Values.app.domains.production }}
 spec:
