@@ -9,7 +9,7 @@ spec:
     matchLabels:
       app: {{ .Values.app.name }}
   policyTypes:
-    - Ingress
+{{/*    - Ingress*/}}
     - Egress
   ingress:
 {{/*    - from:*/}}
