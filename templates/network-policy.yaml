@@ -12,17 +12,17 @@ spec:
     - Ingress
     - Egress
   ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: traefik
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: traefik
-    - from:
-        - podSelector:
-            matchLabels:
-              app: {{ .Values.app.name }}
+{{/*    - from:*/}}
+{{/*        - namespaceSelector:*/}}
+{{/*            matchLabels:*/}}
+{{/*              kubernetes.io/metadata.name: traefik*/}}
+{{/*          podSelector:*/}}
+{{/*            matchLabels:*/}}
+{{/*              app.kubernetes.io/name: traefik*/}}
+{{/*    - from:*/}}
+{{/*        - podSelector:*/}}
+{{/*            matchLabels:*/}}
+{{/*              app: {{ .Values.app.name }}*/}}
   egress:
     - to:
         - podSelector:
