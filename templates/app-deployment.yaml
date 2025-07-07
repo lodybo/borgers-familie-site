@@ -5,11 +5,13 @@ metadata:
   namespace: {{ .Values.app.namespace }}
   labels: {{ toYaml .Values.app.labels | nindent 4 }}
     environment: {{ .Values.environment }}
+    component: app
 
 spec:
   selector:
     matchLabels:
       app: {{ .Values.app.name }}
+      component: app
   template:
     metadata:
       labels: {{ toYaml .Values.app.labels | nindent 8 }}
