@@ -43,3 +43,10 @@ secrets:
   sendgridApiKey: "<PLACEHOLDER>"
   csrfSecret: "<PLACEHOLDER>"
   mollieApiKey: "<PLACEHOLDER>"
+
+pvc:
+  name: familieband-site-pvc
+  replicas: 1
+  storageClassName: "do-block-storage"
+  accessMode: ReadWriteOnce
+  size: 1Gi

@@ -99,6 +99,11 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            - name: borgers-familie-site-data
+              mountPath: /borgers-site/media
       volumes:
         - name: tmp
           emptyDir: { }
+        - name: borgers-familie-site-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.name }}
