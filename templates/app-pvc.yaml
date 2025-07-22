@@ -12,7 +12,3 @@ spec:
     requests:
       storage: {{ .Values.pvc.size }}
   storageClassName: {{ .Values.pvc.storageClassName }}
-  selector:
-    matchLabels:
-      app: {{ .Values.app.name }}
-      component: app
