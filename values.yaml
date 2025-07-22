@@ -9,7 +9,7 @@ app:
     app: familieband-site
   image:
     repository: ghcr.io/lodybo/borgers-familie-site
-    tag: latest
+    tag: v1.9.0
     pullPolicy: IfNotPresent
   domains:
     production: borgersfamilieband.spindraad.app
