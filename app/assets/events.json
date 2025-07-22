@@ -45,5 +45,21 @@
     "imagePath": "",
     "createdAt": "",
     "updatedAt": ""
+  },
+  {
+    "id": "4",
+    "name": "Cultuurboerderij Westelbeers",
+    "venue": "Cultuurboerderij Westelbeers",
+    "venueAddress": "Voldijnseweg 8, Westelbeers",
+    "date": "2025-09-07T14:30",
+    "startTime": "15:00",
+    "doorsOpen": "14:30",
+    "price": "",
+    "venueUrl": "",
+    "description": "",
+    "slug": "",
+    "imagePath": "",
+    "createdAt": "",
+    "updatedAt": ""
   }
 ]
