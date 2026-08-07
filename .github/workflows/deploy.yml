@@ -134,6 +134,7 @@ jobs:
           helm upgrade --install
           $(echo ${{ steps.appname.outputs.result }}) .
           --set environment=$(echo ${{ steps.env.outputs.environment }})
+          --set app.image.tag=v${{ steps.version.outputs.value }}
           --set postgres.password=${{ secrets.POSTGRES_PASSWORD }}
           --set secrets.sessionSecret=${{ secrets.SESSION_SECRET }}
           --set secrets.sendgridApiKey=${{ secrets.SENDGRID_API_KEY }}
